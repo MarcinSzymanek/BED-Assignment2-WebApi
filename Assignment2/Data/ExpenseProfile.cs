@@ -8,5 +8,6 @@ public class ExpenseProfile : Profile
     public ExpenseProfile()
     {
         CreateMap<Expense, ExpenseDto>();
+        CreateMap<Expense, ExpenseDtoPost>().ReverseMap();
     }
 }

@@ -1,0 +1,15 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Show expenses";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Expense messages</h1>
+    <hr/>
+    <div class="container" id="messageContainer">
+        <ul id="messagesList"></ul>
+    </div>
+</div>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/notifyOfExpense.js"></script>
