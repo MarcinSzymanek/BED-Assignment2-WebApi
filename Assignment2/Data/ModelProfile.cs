@@ -9,5 +9,6 @@ public class ModelProfile : Profile
     {
         CreateMap<Model, ModelDto>().ReverseMap();
         CreateMap<Model, ModelDtoFull>();
+        CreateMap<Model, ModelDtoNoId>().ReverseMap();
     }
 }

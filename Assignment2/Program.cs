@@ -1,6 +1,9 @@
 using Assignment2.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using Assignment2.Hubs;
+using Microsoft.AspNet.SignalR.Messaging;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +15,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DataContext")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddSignalR();
 
 
 var app = builder.Build();
@@ -52,5 +56,6 @@ app.MapControllers();
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.MapHub<MessageHub>("/messageHub");
 
 app.Run();

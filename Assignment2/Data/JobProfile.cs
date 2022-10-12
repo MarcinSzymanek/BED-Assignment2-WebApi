@@ -12,5 +12,6 @@ public class JobProfile : Profile
         CreateMap<Job, JobWModelNames>();
         CreateMap<Job, JobDtoSimple>();
         CreateMap<Job, JobDtoWExpenses>();
+        CreateMap<Job, JobDtoNoId>().ReverseMap();
     }
 }

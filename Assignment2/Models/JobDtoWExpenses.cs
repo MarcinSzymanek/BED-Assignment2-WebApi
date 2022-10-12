@@ -4,6 +4,7 @@ namespace Assignment2.Models;
 
 public class JobDtoWExpenses
 {
+    public long JobId { get; set; }
     public string? Customer { get; set; }
     public DateTime StartDate { get; set; }
     public int Days { get; set; }
