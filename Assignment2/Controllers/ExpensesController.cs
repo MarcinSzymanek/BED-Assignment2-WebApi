@@ -42,7 +42,7 @@ namespace Assignment2.Controllers
             await _context.SaveChangesAsync();
 
             var modelNames = from m in _context.Models
-                where m.ModelId == expense.ModelId
+               // where m.ModelId == expense.ModelId
                 select m.FirstName;
             List<string> mName = modelNames.ToList();
             var customerName = from j in _context.Jobs
