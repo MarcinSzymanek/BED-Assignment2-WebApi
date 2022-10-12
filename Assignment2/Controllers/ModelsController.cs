@@ -84,15 +84,16 @@ namespace Assignment2.Controllers
         // POST: api/Models
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ModelDto>> PostModel(ModelDto model)
+        public async Task<ActionResult<ModelDto>> PostModel(ModelDtoNoId model)
         {
 
             Model newModel = _mapper.Map<Model>(model);
             _context.Models.Add(newModel);
+            
             await _context.SaveChangesAsync();
+            ModelDto retModel = _mapper.Map<ModelDto>(newModel);
 
-
-            return CreatedAtAction("GetModel",  model);
+            return CreatedAtAction("PostModel",  retModel);
         }
 
         // DELETE: api/Models/5
@@ -108,7 +109,7 @@ namespace Assignment2.Controllers
             _context.Models.Remove(model);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Accepted();
         }
 
         private bool ModelExists(long id)

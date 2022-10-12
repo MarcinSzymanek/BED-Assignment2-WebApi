@@ -9,7 +9,7 @@ connection.on("ReceiveMessage", function (expense, modelname, jobname) {
     // We can assign user-supplied strings to an element's textContent because it
     // is not interpreted as markup. If you're assigning in any other way, you 
     // should be aware of possible script injection concerns.
-    li.textContent = `${expense.date} - New expense logged: `;
+    li.textContent = `${expense.date.toString()} - New expense logged: `;
     var modelP = document.createElement("p");
     var customerP = document.createElement("p");
     var amountP = document.createElement("p");

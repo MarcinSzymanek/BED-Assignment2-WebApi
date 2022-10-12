@@ -121,13 +121,14 @@ namespace Assignment2.Controllers
         // POST: api/Jobs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Job>> PostJob(Job job)
+        public async Task<ActionResult<JobDtoNoId>> PostJob(JobDtoNoId job)
         {
             job.Models ??= new List<Model>();
-            _context.Jobs.Add(job);
+            job.Expenses ??= new List<Expense>();
+            _context.Jobs.Add(_mapper.Map<Job>(job));
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetJob", new { id = job.JobId }, job);
+            return CreatedAtAction("PostJob",job);
         }
 
         // PUT: api/Jobs/AssignModel/1/2
@@ -160,7 +161,7 @@ namespace Assignment2.Controllers
             job.Models.Remove(model);
             await _context.SaveChangesAsync();
 
-            return Accepted();
+            return job;
         }
 
         private bool JobExists(long id)

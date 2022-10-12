@@ -6,6 +6,7 @@ namespace Assignment2.Models;
 
 public class ModelDto
 {
+    public long ModelId { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public string? Email { get; set; }
