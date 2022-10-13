@@ -36,11 +36,31 @@ namespace Assignment2.Controllers
         // POST: api/Expenses
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Expense>> PostExpense(ExpenseDtoPost expense)
+        public async Task<ActionResult<JobDtoWExpenses>> PostExpense(ExpenseDtoPost expense)
         {
+            var model = _context.Find<Model>(expense.ModelId);
+            var job = _context.Find<Job>(expense.JobId);
+            
+
+            if (model == null || job == null)
+            {
+                if (model == null)
+                    return NotFound("Model not found");
+                return NotFound("Job not found");
+            }
+
+            _context.Entry(job)
+                .Collection(j => j.Models)
+                .Load();
+
+            if (!job.Models.Contains(model))
+            {
+                return NotFound("model not assigned to this job");
+            }         
             _context.Expenses.Add(_mapper.Map<Expense>(expense));
             await _context.SaveChangesAsync();
-
+            
+            // Display a message via message hub
             var modelNames = from m in _context.Models
                // where m.ModelId == expense.ModelId
                 select m.FirstName;
@@ -50,10 +70,14 @@ namespace Assignment2.Controllers
                 select j.Customer;
             List<string> sCustomer = customerName.ToList();
 
+            await _hub.Clients.All.SendAsync("NotifyMessage", expense, mName[0], sCustomer[0]);
 
-            await _hub.Clients.All.SendAsync("ReceiveMessage", expense, mName[0], sCustomer[0]);
 
-            return Accepted();
+            _context.Entry(job)
+                .Collection(j => j.Expenses)
+                .Load();
+
+            return Accepted(_mapper.Map<JobDtoWExpenses>(job));
         }
         
         private bool ExpenseExists(long id)

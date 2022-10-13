@@ -138,14 +138,19 @@ namespace Assignment2.Controllers
         {
             var model = _context.Models.Single(m => m.ModelId == modelId);
             var job = _context.Jobs.Single(j => j.JobId == jobId);
-            if (job.Models == null)
+            _context.Entry(job).
+                Collection(j => j.Models)
+                .Load();
+
+            if (job.Models.Contains(model))
             {
-                job.Models = new List<Model>();
+                return Conflict("Model already assigned");
             }
+
             job.Models.Add(model);
             await _context.SaveChangesAsync();
 
-            return Accepted(model);
+            return Accepted($"Model {model.FirstName} assigned to {job.Customer}");
         }
 
         // PUT: api/Jobs/RemoveModel/1/2
@@ -153,15 +158,27 @@ namespace Assignment2.Controllers
         [Route("api/Jobs/RemoveModel/{jobId}/{modelId}")]
         public async Task<ActionResult<Job>> PostRemoveModel(long jobId, long modelId)
         {
-            var job = _context.Jobs.Single(j => j.JobId == jobId);
+            Job? job = _context.Jobs.Find(jobId);
+            
+            Model? model = _context.Models.Find(modelId);
+            if (model == null || job == null)
+            {
+                if(model == null)
+                    return NotFound("ModelId not found");
+                return NotFound("JobId not found");
+            }
             _context.Entry(job)
                 .Collection(j => j.Models)
                 .Load();
-            var model = _context.Models.Single(m => m.ModelId == modelId);
+
+            if (!job.Models.Contains(model))
+            {
+                return NotFound("Job does not have this ModelId assigned");
+            }
             job.Models.Remove(model);
             await _context.SaveChangesAsync();
 
-            return job;
+            return Accepted($"Model {model.FirstName} removed from job {job.Customer}");
         }
 
         private bool JobExists(long id)
