@@ -5,6 +5,7 @@ using Assignment2.Hubs;
 using Microsoft.AspNet.SignalR.Messaging;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,16 +19,18 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSignalR();
 
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    Console.WriteLine(" IS IN DEV MODE");
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-        options.RoutePrefix = "";
+        options.RoutePrefix = "swagger";
     });
     app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
@@ -52,8 +55,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.MapControllers();
-
 app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapRazorPages();
+});
+
 
 app.MapRazorPages();
 app.MapHub<MessageHub>("/messageHub");

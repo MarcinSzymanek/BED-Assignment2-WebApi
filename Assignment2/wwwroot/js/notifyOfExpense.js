@@ -2,28 +2,35 @@
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/messageHub").build();
 
-connection.on("ReceiveMessage", function (expense, modelname, jobname) {
+connection.on("NotifyMessage", function (expense, modelname, jobname) {
+    console.log("CALLED RECEIVE MESSAGE!!!");
+    console.log("PLEAAAAAAAASE!!!");
+    var now = new Date();
+    var timestamp = new Date(expense.date);
+  
     var li = document.createElement("li");
-    var messageContainer = document.getElementById("messageContainer");
-    document.getElementById("messagesList").appendChild(li);
-    // We can assign user-supplied strings to an element's textContent because it
-    // is not interpreted as markup. If you're assigning in any other way, you 
-    // should be aware of possible script injection concerns.
-    li.textContent = `${expense.date.toString()} - New expense logged: `;
-    var modelP = document.createElement("p");
-    var customerP = document.createElement("p");
-    var amountP = document.createElement("p");
-    var commentP = document.createElement("p");
-    messageContainer.appendChild(modelP);
-    messageContainer.appendChild(customerP);
-    messageContainer.appendChild(amountP);
-    messageContainer.appendChild(commentP);
+    li.textContent = `${now.toLocaleTimeString()} - New expense logged: `;
+    var listInList = document.createElement("ul");
+    li.appendChild(listInList);
+    var modelP = document.createElement("li");
+    var customerP = document.createElement("li");
+    var amountP = document.createElement("li");
+    var commentP = document.createElement("li");
+    var dateP = document.createElement("li");
+    listInList.append(modelP);
+    listInList.appendChild(customerP);
+    listInList.appendChild(amountP);
+    listInList.appendChild(commentP);
+    listInList.appendChild(dateP);
+    listInList.style.fontSize = "12px";
     modelP.textContent = `Model: ${modelname}`;
     customerP.textContent = `Customer: ${jobname}`;
     amountP.textContent = `Amount: ${expense.amount}`;
     commentP.textContent = `Comment: ${expense.text}`;
-
-
+    dateP.textContent = `Date: ${timestamp.toLocaleDateString()}`
+    
+    document.getElementById("messagesList").appendChild(li);
+    
 });
 
 connection.start().then(function () {

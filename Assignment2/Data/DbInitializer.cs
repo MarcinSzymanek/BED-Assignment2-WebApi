@@ -52,6 +52,24 @@ namespace Assignment2.Data
                     Comments = "Doesn't like dogs",
                     Jobs = new List<Job>(),
                     Expenses = new List<Expense>()
+                },
+                new Model
+                {
+                    FirstName = "Nadia",
+                    LastName = "Hilarton",
+                    Email = "nadiaaaaaYay@gmail.com",
+                    PhoneNo = "24161521",
+                    AddresLine1 = "Baker's street 11",
+                    AddresLine2 = "",
+                    Zip = "12351",
+                    City = "London",
+                    BirthDay = DateTime.Parse("18-05-2003"),
+                    Height = 167,
+                    ShoeSize = 37,
+                    HairColor = "Juicy Orange",
+                    Comments = "Who colours their hair orange!??",
+                    Jobs = new List<Job>(),
+                    Expenses = new List<Expense>()
                 }
             };
 
@@ -80,6 +98,16 @@ namespace Assignment2.Data
                     Days = 10,
                     Location = "Madrid",
                     Comments = "No comments",
+                    Models = new List<Model>(),
+                    Expenses = new List<Expense>()
+                },
+                new Job()
+                {
+                    Customer = "Sweet Ass Underwear",
+                    StartDate = DateTime.Parse("25-04-2024"),
+                    Days = 45,
+                    Location = "Iran",
+                    Comments = "Remember burka, fam",
                     Models = new List<Model>(),
                     Expenses = new List<Expense>()
                 }

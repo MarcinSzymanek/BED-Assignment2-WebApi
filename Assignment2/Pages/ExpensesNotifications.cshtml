@@ -1,0 +1,19 @@
+﻿@page "/index.html"
+@model Assignment2.Pages.ExpensesNotificationsModel
+@{
+    ViewData["Title"] = "Expense Notifications";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Expense notifications</h1>
+    <h2> Try POST /api/expense at <a href="https://localhost:7005/swagger/index.html">swagger UI</a>  to test notifications</h2>
+    <p style="font-size: 8px"><i>Keep this window open</i></p>
+    <hr />
+    <div class="container" id="messageContainer">
+        <ul id="messagesList"></ul>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/notifyOfExpense.js"></script>
+}
